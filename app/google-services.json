@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352068735652",
+    "project_id": "poraprojekt",
+    "storage_bucket": "poraprojekt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352068735652:android:16935565d68aad18e5cc31",
+        "android_client_info": {
+          "package_name": "com.example.poraprojekt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaBVhFPA_9M9uLtXeCBNRpHcaee0hl8lc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

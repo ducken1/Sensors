@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:paddingStart="5dp">
+
+    <!-- Accelerometer Section -->
+    <TextView
+        android:id="@+id/accelerometerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accelerometer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/accelerometerDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data: "
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationLabelAccelerometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lokacija:"
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerDataTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationTextViewAccelerometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--------------------"
+        app:layout_constraintTop_toBottomOf="@+id/accelerometerDataTextView"
+        app:layout_constraintStart_toEndOf="@+id/locationLabelAccelerometer"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeLabelAccelerometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Absolutni čas:"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewAccelerometer"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeTextViewAccelerometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="--------------------"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintStart_toEndOf="@+id/absoluteTimeLabelAccelerometer"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewAccelerometer" />
+
+    <EditText
+        android:id="@+id/intervalEditTextAccelerometer"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:hint="Interval"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewAccelerometer"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Gyroscope Section -->
+    <Spinner
+        android:id="@+id/timeUnitSpinnerAccelerometer"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.254"
+        app:layout_constraintStart_toEndOf="@+id/intervalEditTextAccelerometer"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewAccelerometer" />
+
+    <Button
+        android:id="@+id/startStopAccelerometerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON / OFF"
+        app:layout_constraintBottom_toBottomOf="@+id/timeUnitSpinnerAccelerometer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/timeUnitSpinnerAccelerometer" />
+
+    <TextView
+        android:id="@+id/gyroscopeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gyroscope"
+        app:layout_constraintTop_toBottomOf="@id/intervalEditTextMagneticField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/gyroscopeDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data: "
+        app:layout_constraintTop_toBottomOf="@+id/gyroscopeLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationLabelGyroscope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lokacija:"
+        app:layout_constraintTop_toBottomOf="@+id/gyroscopeDataTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationTextViewGyroscope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--------------------"
+        app:layout_constraintTop_toBottomOf="@+id/gyroscopeDataTextView"
+        app:layout_constraintStart_toEndOf="@+id/locationLabelGyroscope"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeLabelGyroscope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Absolutni čas:"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewGyroscope"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeTextViewGyroscope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="--------------------"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintStart_toEndOf="@+id/absoluteTimeLabelGyroscope"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewGyroscope" />
+
+    <EditText
+        android:id="@+id/intervalEditTextGyroscope"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:hint="Interval"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewGyroscope"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <Spinner
+        android:id="@+id/timeUnitSpinnerGyroscope"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.254"
+        app:layout_constraintStart_toEndOf="@+id/intervalEditTextGyroscope"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewGyroscope" />
+
+    <Button
+        android:id="@+id/startStopGyroscopeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON / OFF"
+        app:layout_constraintBottom_toBottomOf="@+id/timeUnitSpinnerGyroscope"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timeUnitSpinnerGyroscope" />
+
+    <!-- Magnetic Field Section -->
+    <TextView
+        android:id="@+id/magneticFieldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Magnetic Field"
+        app:layout_constraintTop_toBottomOf="@id/intervalEditTextAccelerometer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/magneticFieldDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data: "
+        app:layout_constraintTop_toBottomOf="@+id/magneticFieldLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationLabelMagneticField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lokacija:"
+        app:layout_constraintTop_toBottomOf="@+id/magneticFieldDataTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/locationTextViewMagnet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--------------------"
+        app:layout_constraintTop_toBottomOf="@+id/magneticFieldDataTextView"
+        app:layout_constraintStart_toEndOf="@+id/locationLabelMagneticField"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeLabelMagneticField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Absolutni čas:"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewMagnet"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/absoluteTimeTextViewMagnet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="--------------------"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintStart_toEndOf="@+id/absoluteTimeLabelMagneticField"
+        app:layout_constraintTop_toBottomOf="@+id/locationTextViewMagnet" />
+
+    <EditText
+        android:id="@+id/intervalEditTextMagneticField"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Interval"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewMagnet" />
+
+    <Spinner
+        android:id="@+id/timeUnitSpinnerMagneticField"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.254"
+        app:layout_constraintStart_toEndOf="@+id/intervalEditTextMagneticField"
+        app:layout_constraintTop_toBottomOf="@+id/absoluteTimeTextViewMagnet" />
+
+    <Button
+        android:id="@+id/startStopMagneticFieldButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON / OFF"
+        app:layout_constraintBottom_toBottomOf="@+id/timeUnitSpinnerMagneticField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timeUnitSpinnerMagneticField" />
+
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:text="History"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

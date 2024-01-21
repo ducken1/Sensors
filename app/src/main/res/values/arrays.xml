@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Define the time_units array -->
+    <string-array name="time_units">
+        <item>Sec</item>
+        <item>Min</item>
+        <item>Hr</item>
+    </string-array>
+
+</resources>
