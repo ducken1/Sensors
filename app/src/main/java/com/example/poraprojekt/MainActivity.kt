@@ -67,115 +67,55 @@ class MainActivity : AppCompatActivity() {
 
     private var lastKnownLocation: Location? = null
 
-    private val genericSensorEventListener = object : SensorEventListener {
+
+    private val accelerometerEventListener = object : SensorEventListener {
         private var lastData = ""
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onSensorChanged(event: SensorEvent) {
-            when (event.sensor.type) {
-                Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_MAGNETIC_FIELD -> {
-                    handleSensorEvent(event)
-                }
-                // Add more cases for other sensor types if needed
-            }
+            handleSensorEvent(event)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun handleSensorEvent(event: SensorEvent) {
-            val sensorType = when (event.sensor.type) {
-                Sensor.TYPE_ACCELEROMETER -> "Accelerometer"
-                Sensor.TYPE_GYROSCOPE -> "Gyroscope"
-                Sensor.TYPE_MAGNETIC_FIELD -> "MagneticField"
-                else -> return
-            }
 
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
 
             val sensorData = "X: $x | Y: $y | Z: $z"
-            handleSensorData(sensorData, sensorType, event.timestamp)
+            handleSensorData(sensorData, "Accelerometer", event.timestamp)
         }
-
-//        @RequiresApi(Build.VERSION_CODES.O)
-//        private fun handleAccelerometerEvent(event: SensorEvent) {
-//            // Process accelerometer data here
-//            val x = event.values[0]
-//            val y = event.values[1]
-//            val z = event.values[2]
-//
-//            val sensorData = "X: $x | Y: $y | Z: $z"
-//            handleSensorData(sensorData, "Accelerometer", event.timestamp)
-//        }
-//
-//        @RequiresApi(Build.VERSION_CODES.O)
-//        private fun handleGyroscopeEvent(event: SensorEvent) {
-//            // Process gyroscope data here
-//            val x = event.values[0]
-//            val y = event.values[1]
-//            val z = event.values[2]
-//
-//            val sensorData = "X: $x | Y: $y | Z: $z"
-//            handleSensorData(sensorData, "Gyroscope", event.timestamp)
-//        }
-//
-//        @RequiresApi(Build.VERSION_CODES.O)
-//        private fun handleMagneticFieldEvent(event: SensorEvent) {
-//            // Process magnetic field data here
-//            val x = event.values[0]
-//            val y = event.values[1]
-//            val z = event.values[2]
-//
-//            val sensorData = "X: $x | Y: $y | Z: $z"
-//            handleSensorData(sensorData, "MagneticField", event.timestamp)
-//        }
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun handleSensorData(sensorData: String, sensorType: String, timestamp: Long) {
-            val absoluteTime = System.currentTimeMillis()
-            val instant = Instant.ofEpochMilli(absoluteTime)
-            val zoneId = ZoneId.systemDefault()
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            val absoluteTime2 = LocalDateTime.ofInstant(instant, zoneId).format(dateTimeFormatter)
+
+
+
 
             handler.postDelayed({
                 if (sensorData != lastData) {
+
+                    val absoluteTime = System.currentTimeMillis()
+                    val instant = Instant.ofEpochMilli(absoluteTime)
+                    val zoneId = ZoneId.systemDefault()
+                    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
                     var captureTimeMillis = System.currentTimeMillis() - absoluteTime
                     captureTimeMillis /= 1000
 
-                    when (sensorType) {
-                        "Accelerometer" -> {
-                            binding.absoluteTimeTextViewAccelerometer.text = "Time: $absoluteTime2"
-                            binding.accelerometerDataTextView.text = "Data: $sensorData"
-                            binding.startStopAccelerometerButton.text = "$captureTimeMillis"
-                            binding.locationTextViewAccelerometer.text = getLocationName(
-                                lastKnownLocation?.latitude ?: 0.0,
-                                lastKnownLocation?.longitude ?: 0.0
-                            )
-                        }
+                    val absoluteTime2 = LocalDateTime.ofInstant(instant, zoneId).format(dateTimeFormatter)
 
-                        "Gyroscope" -> {
-                            binding.absoluteTimeTextViewGyroscope.text = "Time: $absoluteTime2"
-                            binding.gyroscopeDataTextView.text = "Data: $sensorData"
-                            binding.startStopGyroscopeButton.text = "$captureTimeMillis"
-                            binding.locationTextViewGyroscope.text = getLocationName(
-                                lastKnownLocation?.latitude ?: 0.0,
-                                lastKnownLocation?.longitude ?: 0.0
-                            )
-                        }
+                    binding.absoluteTimeTextViewAccelerometer.text = "Time: $absoluteTime2"
+                    binding.accelerometerDataTextView.text = "Data: $sensorData"
+                    binding.startStopAccelerometerButton.text = "$captureTimeMillis"
+                    binding.locationTextViewAccelerometer.text = getLocationName(
+                        lastKnownLocation?.latitude ?: 0.0,
+                        lastKnownLocation?.longitude ?: 0.0
+                    )
 
-                        "MagneticField" -> {
-                            binding.absoluteTimeTextViewMagnet.text = "Time: $absoluteTime2"
-                            binding.magneticFieldDataTextView.text = "Data: $sensorData"
-                            binding.startStopMagneticFieldButton.text = "$captureTimeMillis"
-                            binding.locationTextViewMagnet.text = getLocationName(
-                                lastKnownLocation?.latitude ?: 0.0,
-                                lastKnownLocation?.longitude ?: 0.0
-                            )
-                        }
-                    }
                     requestLocationUpdates { location ->
                         lastKnownLocation = location
                         val locationName = getLocationName(location.latitude, location.longitude)
@@ -192,6 +132,263 @@ class MainActivity : AppCompatActivity() {
             }, getCaptureInterval(sensorType))
         }
     }
+
+    private val magnetEventListener = object : SensorEventListener {
+        private var lastData = ""
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onSensorChanged(event: SensorEvent) {
+            handleSensorEvent(event)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun handleSensorEvent(event: SensorEvent) {
+
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val sensorData = "X: $x | Y: $y | Z: $z"
+            handleSensorData(sensorData, "MagneticField", event.timestamp)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun handleSensorData(sensorData: String, sensorType: String, timestamp: Long) {
+
+
+
+
+            handler.postDelayed({
+                if (sensorData != lastData) {
+
+                    val absoluteTime = System.currentTimeMillis()
+                    val instant = Instant.ofEpochMilli(absoluteTime)
+                    val zoneId = ZoneId.systemDefault()
+                    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+                    var captureTimeMillis = System.currentTimeMillis() - absoluteTime
+                    captureTimeMillis /= 1000
+                    val absoluteTime2 = LocalDateTime.ofInstant(instant, zoneId).format(dateTimeFormatter)
+
+                    binding.absoluteTimeTextViewMagnet.text = "Time: $absoluteTime2"
+                    binding.magneticFieldDataTextView.text = "Data: $sensorData"
+                    binding.startStopMagneticFieldButton.text = "$captureTimeMillis"
+                    binding.locationTextViewMagnet.text = getLocationName(
+                        lastKnownLocation?.latitude ?: 0.0,
+                        lastKnownLocation?.longitude ?: 0.0
+                    )
+
+                    requestLocationUpdates { location ->
+                        lastKnownLocation = location
+                        val locationName = getLocationName(location.latitude, location.longitude)
+                        saveSensorDataToFirestore(
+                            sensorType,
+                            sensorData,
+                            absoluteTime2,
+                            locationName,
+                            timestamp
+                        )
+                    }
+                    lastData = sensorData
+                }
+            }, getCaptureInterval(sensorType))
+        }
+    }
+
+
+
+    private val gyroscopeEventListener = object : SensorEventListener {
+        private var lastData = ""
+
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onSensorChanged(event: SensorEvent) {
+            handleSensorEvent(event)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun handleSensorEvent(event: SensorEvent) {
+
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val sensorData = "X: $x | Y: $y | Z: $z"
+            handleSensorData(sensorData, "Gyroscope", event.timestamp)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun handleSensorData(sensorData: String, sensorType: String, timestamp: Long) {
+
+
+
+
+            handler.postDelayed({
+                if (sensorData != lastData) {
+
+                    val absoluteTime = System.currentTimeMillis()
+                    val instant = Instant.ofEpochMilli(absoluteTime)
+                    val zoneId = ZoneId.systemDefault()
+                    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+                    var captureTimeMillis = System.currentTimeMillis() - absoluteTime
+                    captureTimeMillis /= 1000
+                    val absoluteTime2 = LocalDateTime.ofInstant(instant, zoneId).format(dateTimeFormatter)
+
+                    binding.absoluteTimeTextViewGyroscope.text = "Time: $absoluteTime2"
+                    binding.gyroscopeDataTextView.text = "Data: $sensorData"
+                    binding.startStopGyroscopeButton.text = "$captureTimeMillis"
+                    binding.locationTextViewGyroscope.text = getLocationName(
+                        lastKnownLocation?.latitude ?: 0.0,
+                        lastKnownLocation?.longitude ?: 0.0
+                    )
+
+                    requestLocationUpdates { location ->
+                        lastKnownLocation = location
+                        val locationName = getLocationName(location.latitude, location.longitude)
+                        saveSensorDataToFirestore(
+                            sensorType,
+                            sensorData,
+                            absoluteTime2,
+                            locationName,
+                            timestamp
+                        )
+                    }
+                    lastData = sensorData
+                }
+            }, getCaptureInterval(sensorType))
+        }
+    }
+
+
+//    private val genericSensorEventListener = object : SensorEventListener {
+//        private var lastData = ""
+//
+//        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+//
+//        @RequiresApi(Build.VERSION_CODES.O)
+//        override fun onSensorChanged(event: SensorEvent) {
+//            when (event.sensor.type) {
+//                Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_MAGNETIC_FIELD -> {
+//                    handleSensorEvent(event)
+//                }
+//                // Add more cases for other sensor types if needed
+//            }
+//        }
+//
+//        @RequiresApi(Build.VERSION_CODES.O)
+//        private fun handleSensorEvent(event: SensorEvent) {
+//            val sensorType = when (event.sensor.type) {
+//                Sensor.TYPE_ACCELEROMETER -> "Accelerometer"
+//                Sensor.TYPE_GYROSCOPE -> "Gyroscope"
+//                Sensor.TYPE_MAGNETIC_FIELD -> "MagneticField"
+//                else -> return
+//            }
+//
+//            val x = event.values[0]
+//            val y = event.values[1]
+//            val z = event.values[2]
+//
+//            val sensorData = "X: $x | Y: $y | Z: $z"
+//            handleSensorData(sensorData, sensorType, event.timestamp)
+//        }
+//
+////        @RequiresApi(Build.VERSION_CODES.O)
+////        private fun handleAccelerometerEvent(event: SensorEvent) {
+////            // Process accelerometer data here
+////            val x = event.values[0]
+////            val y = event.values[1]
+////            val z = event.values[2]
+////
+////            val sensorData = "X: $x | Y: $y | Z: $z"
+////            handleSensorData(sensorData, "Accelerometer", event.timestamp)
+////        }
+////
+////        @RequiresApi(Build.VERSION_CODES.O)
+////        private fun handleGyroscopeEvent(event: SensorEvent) {
+////            // Process gyroscope data here
+////            val x = event.values[0]
+////            val y = event.values[1]
+////            val z = event.values[2]
+////
+////            val sensorData = "X: $x | Y: $y | Z: $z"
+////            handleSensorData(sensorData, "Gyroscope", event.timestamp)
+////        }
+////
+////        @RequiresApi(Build.VERSION_CODES.O)
+////        private fun handleMagneticFieldEvent(event: SensorEvent) {
+////            // Process magnetic field data here
+////            val x = event.values[0]
+////            val y = event.values[1]
+////            val z = event.values[2]
+////
+////            val sensorData = "X: $x | Y: $y | Z: $z"
+////            handleSensorData(sensorData, "MagneticField", event.timestamp)
+////        }
+//
+//        @RequiresApi(Build.VERSION_CODES.O)
+//        private fun handleSensorData(sensorData: String, sensorType: String, timestamp: Long) {
+//            val absoluteTime = System.currentTimeMillis()
+//            val instant = Instant.ofEpochMilli(absoluteTime)
+//            val zoneId = ZoneId.systemDefault()
+//            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+//            val absoluteTime2 = LocalDateTime.ofInstant(instant, zoneId).format(dateTimeFormatter)
+//
+//            handler.postDelayed({
+//                if (sensorData != lastData) {
+//                    var captureTimeMillis = System.currentTimeMillis() - absoluteTime
+//                    captureTimeMillis /= 1000
+//
+//                    when (sensorType) {
+//                        "Accelerometer" -> {
+//                            binding.absoluteTimeTextViewAccelerometer.text = "Time: $absoluteTime2"
+//                            binding.accelerometerDataTextView.text = "Data: $sensorData"
+//                            binding.startStopAccelerometerButton.text = "$captureTimeMillis"
+//                            binding.locationTextViewAccelerometer.text = getLocationName(
+//                                lastKnownLocation?.latitude ?: 0.0,
+//                                lastKnownLocation?.longitude ?: 0.0
+//                            )
+//                        }
+//
+//                        "Gyroscope" -> {
+//                            binding.absoluteTimeTextViewGyroscope.text = "Time: $absoluteTime2"
+//                            binding.gyroscopeDataTextView.text = "Data: $sensorData"
+//                            binding.startStopGyroscopeButton.text = "$captureTimeMillis"
+//                            binding.locationTextViewGyroscope.text = getLocationName(
+//                                lastKnownLocation?.latitude ?: 0.0,
+//                                lastKnownLocation?.longitude ?: 0.0
+//                            )
+//                        }
+//
+//                        "MagneticField" -> {
+//                            binding.absoluteTimeTextViewMagnet.text = "Time: $absoluteTime2"
+//                            binding.magneticFieldDataTextView.text = "Data: $sensorData"
+//                            binding.startStopMagneticFieldButton.text = "$captureTimeMillis"
+//                            binding.locationTextViewMagnet.text = getLocationName(
+//                                lastKnownLocation?.latitude ?: 0.0,
+//                                lastKnownLocation?.longitude ?: 0.0
+//                            )
+//                        }
+//                    }
+//                    requestLocationUpdates { location ->
+//                        lastKnownLocation = location
+//                        val locationName = getLocationName(location.latitude, location.longitude)
+//                        saveSensorDataToFirestore(
+//                            sensorType,
+//                            sensorData,
+//                            absoluteTime2,
+//                            locationName,
+//                            timestamp
+//                        )
+//                    }
+//                    lastData = sensorData
+//                }
+//            }, getCaptureInterval(sensorType))
+//        }
+//    }
 
 
     private fun getCaptureInterval(sensorType: String): Long {
@@ -252,7 +449,7 @@ class MainActivity : AppCompatActivity() {
         binding.startStopAccelerometerButton.setOnClickListener {
             toggleSensorDataCapture(
                 "Accelerometer",
-                genericSensorEventListener,
+                accelerometerEventListener,
                 accelerometerSensor,
                 it
             )
@@ -260,7 +457,7 @@ class MainActivity : AppCompatActivity() {
         binding.startStopGyroscopeButton.setOnClickListener {
             toggleSensorDataCapture(
                 "Gyroscope",
-                genericSensorEventListener,
+                gyroscopeEventListener,
                 gyroscopeSensor,
                 it
             )
@@ -268,7 +465,7 @@ class MainActivity : AppCompatActivity() {
         binding.startStopMagneticFieldButton.setOnClickListener {
             toggleSensorDataCapture(
                 "MagneticField",
-                genericSensorEventListener,
+                magnetEventListener,
                 magneticFieldSensor,
                 it
             )
@@ -440,7 +637,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         locationManager.removeUpdates(locationListener)
-        sensorManager.unregisterListener(genericSensorEventListener)
+        sensorManager.unregisterListener(accelerometerEventListener)
+        sensorManager.unregisterListener(magnetEventListener)
+        sensorManager.unregisterListener(gyroscopeEventListener)
 
     }
 
