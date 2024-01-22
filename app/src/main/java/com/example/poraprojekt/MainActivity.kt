@@ -145,59 +145,53 @@ class MainActivity : AppCompatActivity() {
                     var captureTimeMillis = System.currentTimeMillis() - absoluteTime
                     captureTimeMillis /= 1000
 
-                    binding.locationTextViewAccelerometer.text = getLocationName(lastKnownLocation?.latitude ?: 0.0, lastKnownLocation?.longitude ?: 0.0)
-                    binding.locationTextViewGyroscope.text = getLocationName(lastKnownLocation?.latitude ?: 0.0, lastKnownLocation?.longitude ?: 0.0)
-                    binding.locationTextViewMagnet.text = getLocationName(lastKnownLocation?.latitude ?: 0.0, lastKnownLocation?.longitude ?: 0.0)
-
-                    val sensorInfo = sensorInfoMap[sensorType]
-                    if (sensorInfo != null && captureTimeMillis >= sensorInfo.captureIntervalMillis) {
-                        when (sensorType) {
-                            "Accelerometer" -> {
-                                binding.absoluteTimeTextViewAccelerometer.text = "Time: $absoluteTime2"
-                                binding.accelerometerDataTextView.text = "Data: $sensorData"
-                                binding.startStopAccelerometerButton.text = "$captureTimeMillis"
-                            }
-                            "Gyroscope" -> {
-                                binding.absoluteTimeTextViewGyroscope.text = "Time: $absoluteTime2"
-                                binding.gyroscopeDataTextView.text = "Data: $sensorData"
-                                binding.startStopGyroscopeButton.text = "$captureTimeMillis"
-                            }
-                            "MagneticField" -> {
-                                binding.absoluteTimeTextViewMagnet.text = "Time: $absoluteTime2"
-                                binding.magneticFieldDataTextView.text = "Data: $sensorData"
-                                binding.startStopMagneticFieldButton.text = "$captureTimeMillis"
-                            }
-                        }
-                        requestLocationUpdates { location ->
-                            lastKnownLocation = location
-                            val locationName = getLocationName(location.latitude, location.longitude)
-                            saveSensorDataToFirestore(
-                                sensorType,
-                                sensorData,
-                                absoluteTime2,
-                                locationName,
-                                timestamp
+                    when (sensorType) {
+                        "Accelerometer" -> {
+                            binding.absoluteTimeTextViewAccelerometer.text = "Time: $absoluteTime2"
+                            binding.accelerometerDataTextView.text = "Data: $sensorData"
+                            binding.startStopAccelerometerButton.text = "$captureTimeMillis"
+                            binding.locationTextViewAccelerometer.text = getLocationName(
+                                lastKnownLocation?.latitude ?: 0.0,
+                                lastKnownLocation?.longitude ?: 0.0
                             )
                         }
-                        lastData = sensorData
+
+                        "Gyroscope" -> {
+                            binding.absoluteTimeTextViewGyroscope.text = "Time: $absoluteTime2"
+                            binding.gyroscopeDataTextView.text = "Data: $sensorData"
+                            binding.startStopGyroscopeButton.text = "$captureTimeMillis"
+                            binding.locationTextViewGyroscope.text = getLocationName(
+                                lastKnownLocation?.latitude ?: 0.0,
+                                lastKnownLocation?.longitude ?: 0.0
+                            )
+                        }
+
+                        "MagneticField" -> {
+                            binding.absoluteTimeTextViewMagnet.text = "Time: $absoluteTime2"
+                            binding.magneticFieldDataTextView.text = "Data: $sensorData"
+                            binding.startStopMagneticFieldButton.text = "$captureTimeMillis"
+                            binding.locationTextViewMagnet.text = getLocationName(
+                                lastKnownLocation?.latitude ?: 0.0,
+                                lastKnownLocation?.longitude ?: 0.0
+                            )
+                        }
                     }
+                    requestLocationUpdates { location ->
+                        lastKnownLocation = location
+                        val locationName = getLocationName(location.latitude, location.longitude)
+                        saveSensorDataToFirestore(
+                            sensorType,
+                            sensorData,
+                            absoluteTime2,
+                            locationName,
+                            timestamp
+                        )
+                    }
+                    lastData = sensorData
                 }
             }, getCaptureInterval(sensorType))
         }
-
-        private fun updateLocationTextView(sensorType: String) {
-            requestLocationUpdates{ location ->
-                val locationName = getLocationName(location.latitude, location.longitude)
-                when (sensorType) {
-                    "Accelerometer" -> binding.locationTextViewAccelerometer.text = locationName
-                    "Gyroscope" -> binding.locationTextViewGyroscope.text = locationName
-                    "MagneticField" -> binding.locationTextViewMagnet.text = locationName
-                    // Add more cases for other sensor types if needed
-                }
-            }
-        }
     }
-
 
 
     private fun getCaptureInterval(sensorType: String): Long {
@@ -398,39 +392,50 @@ class MainActivity : AppCompatActivity() {
         sensor: Sensor,
         button: View
     ) {
-            val sensorInfo = sensorInfoMap.getOrPut(sensorType) { SensorInfo() }
-            sensorInfo.capturingFlag = !sensorInfo.capturingFlag
+        val sensorInfo = sensorInfoMap.getOrPut(sensorType) { SensorInfo() }
+        sensorInfo.capturingFlag = !sensorInfo.capturingFlag
 
-            val buttonBackgroundColor: Int
-            val buttonTextColor: Int
+        val buttonBackgroundColor: Int
+        val buttonTextColor: Int
 
-            if (sensorInfo.capturingFlag) {
-                buttonBackgroundColor = R.color.green
-                buttonTextColor = R.color.black
-                (button as? TextView)?.apply {
-                    button.setBackgroundColor(ContextCompat.getColor(this@MainActivity, buttonBackgroundColor))
-                    button.setTextColor(ContextCompat.getColor(this@MainActivity, buttonTextColor))
-                }
-                sensorManager.unregisterListener(sensorEventListener)
-                getCaptureInterval(sensorType)
-
-                // Set sensor delay to SENSOR_DELAY_NORMAL for a fixed interval of 5 seconds
-                sensorManager.registerListener(
-                    sensorEventListener,
-                    sensor,
-                    SensorManager.SENSOR_DELAY_NORMAL
+        if (sensorInfo.capturingFlag) {
+            buttonBackgroundColor = R.color.green
+            buttonTextColor = R.color.black
+            (button as? TextView)?.apply {
+                button.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@MainActivity,
+                        buttonBackgroundColor
+                    )
                 )
-            } else {
-                buttonBackgroundColor = R.color.red
-                buttonTextColor = R.color.black
-                (button as? TextView)?.apply {
-                    button.setBackgroundColor(ContextCompat.getColor(this@MainActivity, buttonBackgroundColor))
-                    button.setTextColor(ContextCompat.getColor(this@MainActivity, buttonTextColor))
-                }
-                handler.removeCallbacksAndMessages(null)
-                sensorManager.unregisterListener(sensorEventListener)
+                button.setTextColor(ContextCompat.getColor(this@MainActivity, buttonTextColor))
             }
+            sensorManager.unregisterListener(sensorEventListener)
+            getCaptureInterval(sensorType)
+
+            sensorInfo.handler = Handler()
+
+            sensorManager.registerListener(
+                sensorEventListener,
+                sensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        } else {
+            buttonBackgroundColor = R.color.red
+            buttonTextColor = R.color.black
+            (button as? TextView)?.apply {
+                button.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@MainActivity,
+                        buttonBackgroundColor
+                    )
+                )
+                button.setTextColor(ContextCompat.getColor(this@MainActivity, buttonTextColor))
+            }
+            sensorInfo.handler?.removeCallbacksAndMessages(null)
+            sensorManager.unregisterListener(sensorEventListener)
         }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -441,6 +446,6 @@ class MainActivity : AppCompatActivity() {
 
     private class SensorInfo {
         var capturingFlag: Boolean = false
-        var captureIntervalMillis: Long = 0
+        var handler: Handler? = null
     }
 }
